@@ -1,0 +1,10 @@
+/* Fix for Select and Button height mismatch */
+[data-radix-collection-item], 
+.select-trigger,
+button[role="combobox"],
+.header-input {
+  height: 2.75rem !important; /* Exactly 44px (h-11) */
+  display: flex !important;
+  align-items: center !important;
+  box-sizing: border-box !important;
+}

@@ -1,22 +1,23 @@
-import { useVideos } from './hooks/useVideos';
-import './App.css'
-import { useState } from 'react'; 
-import Header from './components/Header';
-import { VideoList } from './components/VideoList';
-import type { Video } from './types';
+import { useEffect, useState } from 'react';
+
+import { useFetchVideosData } from './hooks/useFetchVideosData';
 import { useFilteredVideos } from './hooks/useFilteredVideos';
+import type { Video } from './types';
+import Header from './components/Header';
+import VideoList from './components/VideoList';
 import Loading from './components/Loading';
-import { ErrorState } from './components/Error';
+import ErrorState from './components/Error';
 import Empty from './components/Empty';
+import './App.css'
 const App = () => {
 
-  // Filtering state
   const [search, setSearch] = useState("");
   const [selectedYear, setSelectedYear] = useState<number | null>(null);
   const [selectedGenreIds, setSelectedGenreIds] = useState<number[]>([]);
-  
-  
-  const { data, isLoading, error, refetch } = useVideos();
+  // State to track how many videos to display initially
+  const [displayLimit, setDisplayLimit] = useState(12);
+
+  const { data, isLoading, error, refetch } = useFetchVideosData();
   const { finalFilteredVideos, dynamicYears, dynamicGenres } = useFilteredVideos({
     data,
     search,
@@ -26,31 +27,41 @@ const App = () => {
     setSelectedGenreIds
   });
 
+  // Reset the limit to 12 whenever the user filters or searches
+  useEffect(() => {
+    setDisplayLimit(12);
+  }, [search, selectedYear, selectedGenreIds]);
+
+  // Logic to slice the array
+  const visibleVideos = finalFilteredVideos.slice(0, displayLimit);
+  const hasMore = displayLimit < finalFilteredVideos.length;
+
+  const loadMore = () => {
+    setDisplayLimit((prev) => prev + 12);
+  };
+
   const mainContent = () => {
     if (isLoading) {
       return <Loading />;
     }
     if (error) {
       return (
-        <ErrorState 
-          message={error.message} 
-          retry={() => refetch()} 
+        <ErrorState
+          message={error.message}
+          retry={() => refetch()}
         />
       );
     }
-    if(finalFilteredVideos.length === 0) {
-      return <Empty message="No videos found" />;
+    if (finalFilteredVideos.length === 0) {
+      return <Empty
+        message="No videos found" />;
     }
-    return <VideoList videos={finalFilteredVideos as Video[]} />;
+   
+    return <VideoList
+      videos={visibleVideos as Video[]}
+      hasMore={hasMore}
+      onLoadMore={loadMore} />;
   }
-
-
-  console.log("Render count", { 
-    length: finalFilteredVideos.length, 
-    isLoading,
-    finalFilteredVideos
-  });
-  console.log("response", data);
 
   return <div>
     <Header

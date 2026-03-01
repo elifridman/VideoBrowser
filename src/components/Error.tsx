@@ -7,7 +7,7 @@ interface ErrorStateProps {
   retry: () => void;
 }
 
-export function ErrorState({ message, retry }: ErrorStateProps) {
+const ErrorState = ({ message, retry }: ErrorStateProps) => {
   return (
     <div className="flex flex-col items-center justify-center w-full min-h-[400px] p-6 space-y-4">
       <Alert variant="destructive" className="max-w-md">
@@ -24,3 +24,5 @@ export function ErrorState({ message, retry }: ErrorStateProps) {
     </div>
   );
 }
+
+export default ErrorState;
