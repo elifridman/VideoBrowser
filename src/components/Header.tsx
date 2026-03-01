@@ -31,46 +31,61 @@ const Header: React.FC<HeaderProps> = ({ searchTerm, setSearchTerm, selectedYear
     return (
         <header className="sticky top-0 z-50 w-full bg-white/95 backdrop-blur-sm border-b border-zinc-100 py-6 px-4 shadow-sm">
             <div className="container mx-auto max-w-5xl">
-                <h1 className="text-3xl font-bold text-center mb-6 tracking-tight text-zinc-900">Video Browser</h1>
-                <Separator orientation="vertical" className="h-6 hidden md:block" />
-
+                <h1 className="text-3xl font-bold text-center mb-6 tracking-tight text-zinc-900">
+                    Video Browser
+                </h1>
 
                 {/* filter section */}
                 <div className="flex flex-wrap items-center justify-center gap-4">
+
+                    {/* 1. SEARCH INPUT */}
                     <div className="w-full sm:w-72">
                         <Input
                             placeholder="Search Video..."
-                            className="h-11 bg-white border-zinc-200"
+                            // Explicitly setting h-11 and ensuring no extra margins
+                            className="h-11 w-full bg-white border-zinc-200 focus-visible:ring-1"
                             value={searchTerm}
                             onChange={(e) => setSearchTerm(e.target.value)}
                         />
                     </div>
-                     {/* Year Filter */}
-                     <Select value={selectedYear?.toString() || "all"} onValueChange={(v) => setSelectedYear(v === "all" ? null : parseInt(v))}>
-                            <SelectTrigger className="w-full sm:w-44 h-11 border-zinc-200 bg-white">
-                                <SelectValue placeholder="Search by Year..." />
+
+                    {/* 2. YEAR SELECT */}
+                    <div className="w-full sm:w-44">
+                        <Select
+                            value={selectedYear?.toString() || "all"}
+                            onValueChange={(v) => setSelectedYear(v === "all" ? null : parseInt(v))}
+                        >
+                            {/* The secret: h-11, min-h-0, and leading-none to kill internal line-height gaps */}
+                            <SelectTrigger className="h-11 w-full border-zinc-200 bg-white px-3 flex items-center justify-between min-h-0 leading-none focus:ring-1">
+                                <SelectValue placeholder="Year" />
                             </SelectTrigger>
                             <SelectContent>
                                 <SelectItem value="all">All Years</SelectItem>
-                                {years.map((year: number) => (
+                                {years.map((year) => (
                                     <SelectItem key={year} value={year.toString()}>{year}</SelectItem>
                                 ))}
                             </SelectContent>
                         </Select>
-                        {/* Genre Filter (Multi-Select) */}
+                    </div>
+
+                    {/* 3. GENRE DROPDOWN */}
+                    <div className="w-full sm:w-44">
                         <DropdownMenu>
                             <DropdownMenuTrigger asChild>
                                 <Button
                                     variant="outline"
-                                    className="w-full sm:w-44 h-11 justify-between font-normal border-zinc-200 bg-white text-muted-foreground"
+                                    // Matching h-11 exactly, flex items-center ensures the text is centered
+                                    className="h-11 w-full justify-between font-normal border-zinc-200 bg-white px-3 flex items-center min-h-0 leading-none hover:bg-zinc-50"
                                 >
-                                    {selectedGenreId.length === 0
-                                        ? "Search by Genre..."
-                                        : `${selectedGenreId.length} Selected`}
-                                    <ChevronDown className="h-4 w-4 opacity-50" />
+                                    <span className="truncate">
+                                        {selectedGenreId.length === 0
+                                            ? "Genre"
+                                            : `${selectedGenreId.length} Selected`}
+                                    </span>
+                                    <ChevronDown className="h-4 w-4 opacity-50 ml-2 flex-shrink-0" />
                                 </Button>
                             </DropdownMenuTrigger>
-                            <DropdownMenuContent className="w-56">
+                            <DropdownMenuContent className="w-56 max-h-60 overflow-y-auto">
                                 {genres.map((genre) => (
                                     <DropdownMenuCheckboxItem
                                         key={genre.id}
@@ -85,7 +100,7 @@ const Header: React.FC<HeaderProps> = ({ searchTerm, setSearchTerm, selectedYear
                                         <Separator className="my-1" />
                                         <Button
                                             variant="ghost"
-                                            className="w-full justify-center text-xs h-8"
+                                            className="w-full justify-center text-xs h-8 text-red-500 hover:text-red-600"
                                             onClick={() => setSelectedGenreId([])}
                                         >
                                             Clear Filters
@@ -94,6 +109,7 @@ const Header: React.FC<HeaderProps> = ({ searchTerm, setSearchTerm, selectedYear
                                 )}
                             </DropdownMenuContent>
                         </DropdownMenu>
+                    </div>
                 </div>
             </div>
         </header>
