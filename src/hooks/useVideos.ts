@@ -1,10 +1,10 @@
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, type UseQueryResult } from '@tanstack/react-query';
 import type { ApiResponse } from '../types';
 
 
 const API_URL = import.meta.env.VITE_API_URL;
 
-export const useVideos = () => {
+export const useVideos = (): UseQueryResult<ApiResponse, Error> => {
   return useQuery<ApiResponse>({
     queryKey: ['videos'],
     queryFn: async () => {

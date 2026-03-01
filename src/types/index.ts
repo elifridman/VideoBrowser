@@ -1,21 +1,30 @@
-export type Genre = {
+export interface Genre {
     id: number;
     name: string;
-};
-
-export type Video = {
+  }
+  
+  //  client format of the video
+  export interface Video {
     id: number;
-    artist: string;
     title: string;
+    artist: string;
+    releaseYear: number;
+    genreId: number;
+    imageUrl: string;
+  }
+  
+  // raw data coming directly from hook/API
+  export interface RawVideo {
+    id: number;
+    title: string;
+    artist: string;
     release_year: number;
     genre_id: number;
     image_url: string;
-};
-
-export type ApiResponse = {
+  }
+  
+  // The shape of the full API response
+  export interface ApiResponse {
+    videos: RawVideo[];
     genres: Genre[];
-    videos: Video[];
-};
-
-// Types are better for "Unions" (e.g., Status can ONLY be one of these)
-export type LoadingStatus = 'idle' | 'loading' | 'success' | 'error';
+  }
