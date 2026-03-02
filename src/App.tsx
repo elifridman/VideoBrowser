@@ -3,11 +3,11 @@ import { useEffect, useState } from 'react';
 import { useFetchVideosData } from './hooks/useFetchVideosData';
 import { useFilteredVideos } from './hooks/useFilteredVideos';
 import type { Video } from './types';
-import Header from './components/Header';
-import VideoList from './components/VideoList';
-import Loading from './components/Loading';
-import ErrorState from './components/Error';
-import Empty from './components/Empty';
+import Header from './components/Header/Header';
+import VideoList from './components/VideoList/VideoList';
+import Loading from './components/Loading/Loading';
+import ErrorState from './components/Error/Error';
+import Empty from './components/Empty/Empty';
 import './App.css'
 const App = () => {
 

@@ -1,6 +1,6 @@
 import React, { useRef, useEffect } from 'react';
-import type { Video } from '../types';
-import VideoCard from './VideoCard';
+import type { Video } from '../../types';
+import VideoCard from '../VideoCard/VideoCard';
 
 interface VideoListProps {
     videos: Video[];

@@ -1,8 +1,8 @@
-import { Separator } from "./ui/separator";
-import { Input } from "./ui/input";
-import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "./ui/select";
-import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuCheckboxItem } from "./ui/dropdown-menu";
-import { Button } from "./ui/button";
+import { Separator } from "../ui/separator";
+import { Input } from "../ui/input";
+import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "../ui/select";
+import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuCheckboxItem } from "../ui/dropdown-menu";
+import { Button } from "../ui/button";
 import { ChevronDown } from "lucide-react";
 
 type Genre = { id: number; name: string };
